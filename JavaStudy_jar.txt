@@ -1,0 +1,49 @@
+框架包下载地址:?
+mybatis和spring的整合包: ?https://github.com/mybatis/spring/releases
+mybatis包: ?https://github.com/mybatis/mybatis-3/releases
+spring包: ?http://repo.springsource.org/libs-release-local/org/springframework/spring/
+hibernate包: ?http://hibernate.org/orm/downloads/
+struts2包: ?http://struts.apache.org/download.cgi
+struts2(还有一个核心包下载-->xwork-core-2.3.24.jar): ?http://www.java2s.com/Code/Jar/x/Downloadxworkcore2312jar.htm
+---------------------------------------------------------------------------------------------- 
+框架整合包下载:
+struts2-spring-plugin-2.0.6.jar包下载: http://www.java2s.com/Code/Jar/s/Downloadstruts2springplugin218jar.htm 
+
+---------------------------------------------------------------------------------------------- 
+mysql驱动包下载: https://dev.mysql.com/downloads/file/?id=465644 
+? 或者: http://dev.mysql.com/downloads/connector/j/
+oracle驱动包下载: http://www.oracle.com/technetwork/database/features/jdbc/jdbc-drivers-12c-download-1958347.html
+或者(如何下载): http://blog.csdn.net/cryhelyxx/article/details/39502937
+sql servlet驱动包下载: http://www.microsoft.com/zh-CN/download/details.aspx?id=11774 
+
+
+----------------------------------------------------------------------------------------------
+数据连接池包下载:?
+c3p0: https://sourceforge.net/projects/c3p0/?source=typ_redirect
+dbcp: https://commons.apache.org/proper/commons-dbcp/download_dbcp.cgi
+----------------------------------------------------------------------------------------------
+json包下载以及依赖包的下载:
+下载地址(json包下载)：
+http://sourceforge.net/projects/json-lib/files/json-lib/json-lib-2.4/?
+目前最新的是2.4的版本，本示例中使用的是v2.3；json-lib还需要以下依赖包：
+jakarta commons-lang 2.5
+jakarta commons-beanutils 1.8.0
+jakarta commons-collections 3.2.1
+jakarta commons-logging 1.1.1
+ezmorph 1.0.6
+依赖包的下载地址：
+ezmorph 1.0.6：
+http://ezmorph.sourceforge.net/
+http://morph.sourceforge.net/
+jakarta commons-lang 2.4 ：
+http://commons.apache.org/lang/download_lang.cgi
+jakarta commons-beanutils 1.7.0 ：
+http://commons.apache.org/beanutils/download_beanutils.cgi
+jakarta commons-collections 3.2 ：
+http://commons.apache.org/collections/download_collections.cgi
+jakarta commons-logging 1.1.1 ：
+http://commons.apache.org/logging/download_logging.cgi
+--------------------- 
+作者：贺圣强
+来源：CSDN 
+版权声明：本文为博主原创文章！
