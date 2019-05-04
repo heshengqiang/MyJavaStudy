@@ -1,0 +1,23 @@
+file方法总结
+获取方法:
+         public String getAbsolutePath();//获取绝对路径
+         public String getName();//获取文件夹或者文件的名字
+         public long length();//获取文件的字节数
+         public String getPath();//获取创建该File对象时传递的路径
+创建和删除方法:
+         public boolean createNewFile();//创建文件
+         public boolean mkdir();//创建文件夹
+         public boolean delete();/删除文件或空的文件夹
+判断方法:
+         public boolean exists();//判断文件夹或文件是否存在
+         public boolean isFile();//判断是否是文件
+         public boolean isDirectory();//判断是否是文件夹
+获取多file数组:
+         public String [] list();//返回所有file路径的字符串数组
+         public File[] listFiles();//返回所有file对象的数组(用的最多,它相当于包括了list()方法)
+递归:
+在方法内部调用自己
+缺点:
+非常消耗内存
+递归应用:
+查找任意一个文件夹下的子目录(文件)
