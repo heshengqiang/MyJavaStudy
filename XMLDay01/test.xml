@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans>
+    <bean id="user" className="XMLDay01.user">
+        <propert name="userName" value="王五"/>
+        <propert name="age" value="19"/>
+    </bean>
+    <bean id="teacher" className="XMLDay01.teacher">
+        <propert name="name" value="张三"/>
+        <propert name="major" value="数学"/>
+    </bean>
+</beans>
