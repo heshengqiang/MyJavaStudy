@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Mybatis.mapper.ordersUserAndOrderDetailMapper">
+    <resultMap id="orderUserAndOrderDetailMap" type="orders">
+        <id column="order_id" property="order_id"/>
+        <result column="user_id" property="user_id"/>
+        <result column="order_time" property="order_time"/>
+        <result column="order_action" property="order_action"/>
+        <result column="order_num" property="order_num"/>
+        <result column="note" property="note"/>
+        <association javaType="user" property="user">
+            <id column="user_id" property="user_id"/>
+            <result column="user_sex" property="user_sex"/>
+            <result column="user_age" property="user_age"/>
+            <result column="user_name" property="user_name"/>
+        </association>
+        <collection property="orderdetails" ofType="orderdetail">
+            <id property="detail_id" column="detail_id"/>
+            <result column="item_id" property="item_id"/>
+            <result column="item_amount" property="item_amount"/>
+            <result column="order_id" property="order_id"/>
+        </collection>
+    </resultMap>
+    <select id="SelectOrderUserAndOrderDetail" resultMap="orderUserAndOrderDetailMap">
+        SELECT orders.*,
+        user.`user_name`,
+        user.`user_age`,
+        user.`user_sex`,
+        orderdetail.*
+        FROM
+        orders,
+        USER,
+        orderdetail WHERE orders.`user_id`=user.`user_id` AND orders.`order_id`=orderdetail.`order_id`
+    </select>
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--DTD约束-->
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+
+
+    <!--加载数据库属性文件-->
+    <properties resource="jdbc.properties"/>
+
+
+
+    <settings>
+        <!--这里是一些mybatis的全局性设置例如配置开启二级缓存-->
+        <setting name="cacheEnabled" value="true"/><!--具体的参数名和参数值-->
+    </settings>
+
+
+    <!-- typeAlias类型名称：这里对一些类进行别名的设置，
+    例如beans.user类通过别名设置为user-->
+    <typeAliases>
+        <typeAlias type="Mybatis.pojo.user" alias="user"/>
+        <typeAlias type="Mybatis.pojo.items" alias="items"/>
+        <typeAlias type="Mybatis.pojo.orders" alias="orders"/>
+        <typeAlias type="Mybatis.pojo.orderdetail" alias="orderdetail"/>
+    </typeAliases>
+    <!--批量别名设置，指定一个包名，Mybatis会在包名下搜索需要的javaBean
+    配置mybatis运行环境整合spring后不需要了-->
+    <!--<typeAliases><package name=""/></typeAliases>-->
+
+
+
+    <!--配置环境-->
+    <environments default="development">
+        <environment id="development">
+            <!-- type="JDBC"：代表使用JDBC的提交和回滚来管理事务,通过从数据源得到的连接来管理事务范围 -->
+            <transactionManager type="JDBC" />
+
+
+
+            <!-- mybatis提供了3种数据源类型，分别是：POOLED,UNPOOLED,JNDI -->
+            <!-- UNPOOLED 表示不支持数据源连接池 -->
+            <!-- JNDI 表示支持外部数据源连接池 -->
+            <dataSource type="POOLED"><!-- POOLED 表示支持JDBC数据源连接池 -->
+                <property name="driver" value="${jdbc.driver}" />
+                <property name="url" value="${jdbc.url}" />
+                <property name="username" value="${jdbc.username}" />
+                <property name="password" value="${jdbc.password}" />
+            </dataSource>
+
+
+
+
+        </environment>
+    </environments>
+
+
+
+
+
+    <!--mappers映射器：加载映射文件-->
+    <mappers>
+        <!--加载xml映射文件-->
+     <mapper resource="Mybatis/mapper/userMapper.xml"/>
+     <mapper resource="Mybatis/mapper/itemsDao.xml"/>
+     <mapper resource="Mybatis/mapper/orderUserMapper.xml"/>
+      <mapper resource="Mybatis/mapper/ordersUserAndOrderDetailMapper.xml"/>
+    </mappers>
+</configuration>

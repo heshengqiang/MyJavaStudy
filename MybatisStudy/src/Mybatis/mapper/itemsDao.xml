@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DaoTest">
+    <insert id="InsertItem"/>
+    <delete id="DeleteItemById"/>
+    <update id="UpdateItems" parameterType="items">
+        update items set item_price=#{item_price} where item_id=#{item_id}
+    </update>
+
+    <select id="SelectAllItems" resultType="items"><!--注意没用使用items的全限定名是这里用的是别名-->
+        select *from items
+    </select>
+</mapper>

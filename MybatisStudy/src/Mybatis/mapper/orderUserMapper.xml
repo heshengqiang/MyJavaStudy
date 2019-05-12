@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Mybatis.mapper.orderUserMapper">
+    <!--使用扩展类对多表查询-->
+    <select id="SelectOrderAndUser" resultType="Mybatis.pojo.orderUSer">
+        select orders.*,user_acount,user_name from user,orders where user.user_id=orders.user_id
+    </select>
+
+
+
+
+
+    <!--使用resultMap方式进行多表查询-->
+    <resultMap id="OrderAndUserMap" type="orders">
+        <id column="order_id" property="order_id"/>
+        <result column="user_id" property="user_id"/>
+        <result column="order_time" property="order_time"/>
+        <result column="order_action" property="order_action"/>
+        <result column="order_num" property="order_num"/>
+        <result column="note" property="note"/>
+        <association javaType="user" property="user">
+            <id column="user_id" property="user_id"/>
+            <result column="user_acount" property="user_acount"/>
+            <result column="user_name" property="user_name"/>
+        </association>
+    </resultMap>
+    <select id="SelectOrderAndUserMap" resultMap="OrderAndUserMap">
+        select orders.*,user_acount,user_name from user,orders where user.user_id=orders.user_id
+    </select>
+
+
+
+
+   <!--通过id查询用户信息-->
+    <select id="SelectUserById" resultType="user" parameterType="java.lang.String">
+        select *from user where user_id =#{user_id}
+    </select>
+
+
+    <!--查询订单关联查询用户，查询用户延迟加载，即对用户按需查询-->
+    <resultMap id="OrderUserLazingLoadingMap" type="orders">
+        <id column="order_id" property="order_id"/>
+        <result column="user_id" property="user_id"/>
+        <result column="order_time" property="order_time"/>
+        <result column="order_action" property="order_action"/>
+        <result column="order_num" property="order_num"/>
+        <result column="note" property="note"/>
+        <!--这个就是延迟加载用户时执行的statement，select指定执行哪个statement，
+        column是传递给select映射的参数，即通过user_id来查询用户表，一般指定关联查询时的唯一性列（主键）-->
+        <association property="user" javaType="user" select="SelectUserById" column="user_id"/>
+    </resultMap>
+    <select id="SelectOrderUserLazingLoading" resultMap="OrderUserLazingLoadingMap">
+        select *from orders
+    </select>
+
+
+
+
+
+
+
+
+</mapper>

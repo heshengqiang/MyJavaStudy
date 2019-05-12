@@ -1,0 +1,142 @@
+使用Mybatis框架步骤及知识点
+过程：
+1.先创建一个web项目：MybatisStudy
+2.引入Mybatis相关jar包(所需jar包已加入本项目中src/mybatisIntroduce/mybatis框架及驱动jar包文件夹中）
+3.创建所需的包：分别是pojo、mapper、dao、daoImp、tools、config、test包
+4.在src目录下创建jdbc.properties文件(数据库属性文件)和log4j.properties文件(日志文件)
+5.在config包中创建mybatisConfig.xml文件
+6.创建一个数据库：goodsmanager(该库有四张表：items(商品表)、orderdetail(订单详情表)、orders(订单表)、user(用户表))
+7.给数据库属性文件写入相关连接数据库的属性及写日志文件
+8.先向pojo包中添加四个实体类即代表四张表的实体类(注意实体类的属性名需要和表字段名称一致)
+9.在tools包中加入一个DBhelper类，用来方便创建会话
+10.使用mapper代理的方式在mapper包中创建一个userMapper.xml和userMapper.java接口
+mapper代理规范：
+1.Mapper接口必须和映射文件在同一个目录下
+2.mapper.xml映射文件的命名空间名称（namespace）指定为mapper接口的权限定名
+3.映射文件的statement的id名就是mapper接口的方法名
+4.映射文件的statement的parameterType和mapper接口中方法的参数类型一致
+5.映射文件的statement的resultType和mapper接口中方法的返回值类型一致
+11.在test包中创建测试类,使用Mybatis框架进行简单数据库的增删改查测试,为后续学习做测试
+12.现在再使用原始dao开发的方法与mapper代理开发进行对比
+13.在mapper包中创建itemsDao.xml文件
+14.在dao包中创建一个itemsDao接口然后在daoImp包中创建一个itemsDaoImp实现类继承itemsDao接口
+15.在包test中进行测试
+16.使用mapper代理方式对多表进行查询:
+1.使用扩展类方式:查询订单表关联查询用户:需要查询用户的姓名和账号
+步骤:1先建立扩展类pojo:orderUser并且继承orders类重写toString方法
+     2在mapper中创建orderUserMapper.xml和orderUserMapper.java接口
+     3编写测试类进行测试
+
+2.使用resultMap方式:同样的查询订单表关联查询用户:需要查询用户的姓名和账号
+  使用此方式先在订单表中加入属性user
+  然后只需在orderUserMapper.xml中在写一个使用resultMap方式的statement再测试即可
+  关于resultMap的一些知识:
+  resultMap中的id:表示的是结果将是当比较对象实例时用到的标记属性即主键唯一性的字段
+  resultMap中的result:表示的是普通的查询字段属性
+  association:用于处理查询结果中关联其他对象,例如这里就是查询订单的同时关联查询用户用户为关联对象故为association
+   column:数据库中查询的结果集的列名或者别名:即as后面的那个别名
+   property:将column属性指定的列结果映射到对象的那个属性,这里column中字段名和property中pojo属性名一致
+   javaType:列结果在对象中对用的java数据类型,Map中使用,这里关联查询用户结果集映射为user(在配置文件中的别名)类型,在order中属性名为user
+   <!--使用resultMap方式进行多表查询-->
+      <resultMap id="OrderAndUserMap" type="Mybatis.pojo.orders">
+          <id column="order_id" property="order_id"/>
+          <result column="user_id" property="user_id"/>
+          <result column="order_time" property="order_time"/>
+          <result column="order_action" property="order_action"/>
+          <result column="order_num" property="order_num"/>
+          <result column="note" property="note"/>
+          <association javaType="user" property="user">
+              <id column="user_id" property="user_id"/>
+              <result column="user_acount" property="user_acount"/>
+              <result column="user_name" property="user_name"/>
+          </association>
+      </resultMap>
+对于三表查询：
+       SELECT orders.*,
+       user.`user_name`,
+       user.`user_age`,
+       user.`user_sex`,
+       orderdetail.*
+       FROM
+       orders,
+       USER,
+       orderdetail WHERE orders.`user_id`=user.`user_id` AND orders.`order_id`=orderdetail.`order_id`
+对于这个查询，因为每个订单可能会对应多个订单明细，因此对于每个订单的多个订单明细，
+我们可以用集合的方式存放到每个订单对应的每个订单明细集合中，这样查询出来就不会出现一些重复的数据
+这里需要用到resultMap方式来实现，创建ordersUserAndOrderDetail.xml及ordersUserAndOrderDetail接口
+这里附加一段resultMap的配置代码：
+<resultMap id="orderUserAndOrderDetailMap" type="orders">
+        <id column="order_id" property="order_id"/>
+        <result column="user_id" property="user_id"/>
+        <result column="order_time" property="order_time"/>
+        <result column="order_action" property="order_action"/>
+        <result column="order_num" property="order_num"/>
+        <result column="note" property="note"/>
+        <association javaType="user" property="user">
+            <id column="user_id" property="user_id"/>
+            <result column="user_sex" property="user_sex"/>
+            <result column="user_age" property="user_age"/>
+            <result column="user_name" property="user_name"/>
+        </association>
+        <collection property="orderdetails" ofType="orderdetail">
+            <id property="detail_id" column="detail_id"/>
+            <result column="item_id" property="item_id"/>
+            <result column="item_amount" property="item_amount"/>
+            <result column="order_id" property="order_id"/>
+        </collection>
+        Mybatis延迟加载：延迟加载叫懒加载，就是在关联查询时，利用延迟加载，
+        先加载主信息，使用关联信息时再去加载关联信息，比如查询订单关联查询用户，有时候我们查询订单就够了
+        这个时候就不需要再查询用户信息了，按照需要查询，不要做无用功，减轻数据库压力
+        延迟加载测试：我们仍然做查询订单关联查询用户，用户查询延迟加载
+        我们直接在orderUserMapper.xml写延迟加载的statement和orderUserMapper.java中写延迟加载方法做测试
+给出测试代码即statement代码：
+
+测试代码：
+ /*查询订单关联查询用户，用户延迟加载*/
+            @Test
+            public void orderUserDemo3(){
+                SqlSession sqlSession = DBhelper.getSqlSession();
+                orderUserMapper mapper = sqlSession.getMapper(orderUserMapper.class);
+                List<orders> list = mapper.SelectOrderUserLazingLoading();
+                //这里使用增强for循环进行遍历,底层就是迭代器原理
+                for (orders orders : list) {
+                    //这里就是查询订单的同时还要查询用户
+                    //System.out.println(orders.toString()+orders.getUser());
+
+
+                    //这里就是只需对订单信息进行查询即可，不需要查询用户信息，就不要再去数据库中查询用户表了
+                    System.out.println(orders.toString());
+
+
+
+                    /*也可以是只需要要查询用户信息，订单信息不查询，但是原理还是先查询了订单表中的数据，再将数据
+                    传给了查询用户的statement执行实现的，也就是相当于查询订单关联查询了用户，只是订单信息没有打印出来*/
+                    //System.out.println(orders.getUser());
+                }
+            }
+
+延迟加载的statement代码：
+<!--通过id查询用户信息-->
+               <select id="SelectUserById" resultType="user" parameterType="java.lang.String">
+                   select *from user where user_id =#{user_id}
+               </select>
+
+
+               <!--查询订单关联查询用户，查询用户延迟加载，即对用户按需查询-->
+               <resultMap id="OrderUserLazingLoadingMap" type="orders">
+                   <id column="order_id" property="order_id"/>
+                   <result column="user_id" property="user_id"/>
+                   <result column="order_time" property="order_time"/>
+                   <result column="order_action" property="order_action"/>
+                   <result column="order_num" property="order_num"/>
+                   <result column="note" property="note"/>
+            <!--这个就是延迟加载用户时执行的statement，select指定执行哪个statement，
+            column是传递给select映射的参数，即通过user_id来查询用户表，一般指定关联查询时的唯一性列（主键）-->
+              <association property="user" javaType="user" select="SelectUserById" column="user_id"/>
+              </resultMap>
+             <select id="SelectOrderUserLazingLoading" resultMap="OrderUserLazingLoadingMap">
+                select *from orders
+             </select>
+
+
+
