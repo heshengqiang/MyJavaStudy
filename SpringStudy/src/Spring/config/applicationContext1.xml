@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--scope属性如果为prototype则表示工厂会创建多个实例，默认为单个实例即singleton-->
+    <bean id="user" class="Spring.Pojo.user" scope="prototype">
+        <!--DI依赖注入，前提有IOC环境，Spring管理这个类的时候将这个类依赖的属性给注入进来，通过property设置-->
+        <!--通过DI依赖注入将user这个被spring管理的类的属性注入进来，通过标签property注入-->
+        <property name="user_name" value="贺圣强"/>
+        <!--<property name="user_age" value="18"/>-->
+        <!--使用SpEL方式（格式#{}）的属性注入String类型加单引号，属性值可以时算术表达式-->
+        <!--这里的user_age、user_acount、user_sex用的是SpEL方式-->
+        <property name="user_age" value="#{100-80}"/>
+        <property name="user_password" value="12738421"/>
+        <property name="user_acount" value="#{123*634*253}"/>
+        <property name="user_id" value="001"/>
+        <property name="user_sex" value="#{'男'}"/>
+    </bean>
+    <bean id="userService" class="Spring.ServiceImp.UserServiceImp"/>
+
+
+    <!--使用List集合属性的注入方式-->
+    <bean id="collection" class="Spring.Pojo.Collection">
+       <property name="list">
+           <list>
+               <value>张飞</value>
+               <value>李四</value>
+               <value>赵云</value>
+           </list>
+       </property>
+        <property name="Map">
+            <map>
+                <entry key="001" value="阿凡"/>
+                <entry key="002" value="速度"/>
+                <entry key="003" value="打扰"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="collectionService" class="Spring.ServiceImp.CollectionServiceImp"/>
+    <!--applicationContext.xml模块化开发方式,如果有多个applicationContext.xml可以通过-import标签进行引入开发-->
+    <!--<import resource="classpath:Spring_config/applicationContext2.xml"/>-->
+
+</beans>

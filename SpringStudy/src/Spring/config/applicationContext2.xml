@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--spring的注解开发IOC：context-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!--使用IOC注解方式开发，配置组键扫描包名下的所有类使用注解开发-->
+    <context:component-scan base-package="Spring"/><!--设置Spring包下都可以使用注解开发-->
+
+    <!--<context:annotation-config/>
+    这个配置表示在不用扫描包的情况下可以直接使用注解方式进行属性注入XML与注解方式进行结合开发时，
+    XML来进行bean的配置管理类，
+    注解来进行属性注入包括@Resource @value @Autowired @Qualifier(value = "")等属性注入。
+    @Resource:
+    -->
+
+</beans>

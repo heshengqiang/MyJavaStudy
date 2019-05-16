@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--spring的AOP开发,面向切面编程-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--配置目标对象类，即需要被增强的类-->
+    <bean id="productDao" class="Spring.DaoImp.ProductDaoImp"/>
+    <!--把定义的切面类交给Spring管理-->
+    <bean id="aspectJImp" class="Spring.DaoImp.AspectJImp"/>
+    <aop:config>
+        <!--pointcut切入点expression表达式表示配置那些类的方法需要增强-->
+        <!--expression表达式execution语法格式：[访问修饰符](访问修饰符可以省略)方法返回值(void,string等或者*) 包名.类名.方法名(参数)-->
+        <aop:pointcut id="product1" expression="execution(public void Spring.Dao.ProductDao.SelectProduct(..))"/>
+        <aop:pointcut id="product2" expression="execution(public void Spring.Dao.ProductDao.DeleteProduct(..))"/>
+        <aop:pointcut id="product3" expression="execution(public void Spring.Dao.ProductDao.InsertProduct(..))"/>
+        <aop:pointcut id="product4" expression="execution(public void Spring.Dao.ProductDao.UpdateProduct(..))"/>
+        <!--切面-->
+        <aop:aspect ref="aspectJImp">
+            <aop:before method="CheckIdentity" pointcut-ref="product1"/>
+            <!--后置通知可以获得切入点返回值-->
+            <aop:after method="RecordLog" pointcut-ref="product2"/>
+            <!--异常抛出通知，如果该切入点上没有异常则不执行方法-->
+            <aop:after-throwing method="AfterThrows" pointcut-ref="product3"/>
+            <!--环绕通知，在目标方法之前或之后之执行，可以组织目标方法的执行。-->
+            <aop:around method="Around" pointcut-ref="product4"/>
+            <!--最终通知，无论有没有异常都会执行，相当一finally块里的内容-->
+            <aop:after method="Finally" pointcut-ref="product1"/>
+        </aop:aspect>
+    </aop:config>
+
+<!--AOP的一些相关术语，这里用UserDao来举例说明
+Class UserDao {
+public void save();
+public void find();
+public void update();
+public void delete();
+}
+JoinPoint:连接点，可以被拦截到的点。
+举例：UserDao中的增删改查方法都可以被增强，即都能被拦截到，所以这些方法都可以称为连接点
+Pointcut：切入点，真正被拦截到的点。
+举例：现在只对UserDao中的save方法进行增强，此时save方法被称为切入点。
+Advice：增强/通知（方法层面的增强）
+举例：现在对save方法前进行权限校验（CheckIdentity）,此时权限校验的方法就称为Advice通知，且为前置通知
+Introduction：引介
+举例：如果要对UserDao这个类进行增强，即在类层面的增强或通知叫做引介，比如增加该类的属性或方法
+Target：目标，被增强的对象
+举例：现在对UserDao进行增强，故称UserDao为目标类，即目标对象Target
+Weaving：织入，将通知/增强（Advice）应用到目标对象（Target）的过程叫做织入
+Proxy：代理对象
+Aspect：切面，多个通知（Advice）和切入点（Pointcut）的组合
+-->
+
+
+
+
+
+</beans>
