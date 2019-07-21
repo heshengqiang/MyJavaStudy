@@ -1,0 +1,16 @@
+win+L：切换电脑用户
+win+D：直接进入电脑主界面屏幕
+win+E：进入我的电脑
+win+R：进入DOS命令
+
+常用DOS命令：
+切换盘符：盘符名+: eg D:(进入到D盘）
+列出当前目录下的所有文件或文件夹：dir  （directory）
+创建文件目录：md +目录名  （make directory）
+删除目录：rd+目录名 （remove directory）
+进入指定目录：cd+目录名 （change directory）
+退回上一级目录：cd..
+直接回到根目录：cd\
+删除单个文件或多个文件：del+文件名 eg：del 1.txt（删除单个文件） 或del *.txt(删除所有txt后缀文件）
+退出dos命令窗口：exit
+清屏：cls （clear screen）
