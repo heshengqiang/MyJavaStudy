@@ -1,0 +1,75 @@
+CSS样式表(Cascading Style Sheet),可以弥补传统HTML上的不足.
+css规则:(包括选择符,属性,属性值)
+选择符:选择器,HTML通过选择器进行控制.
+css选择器:
+标记选择器:HTML是由很多标记组成,如<a><img><table>等而标记选择器就指定这些标记的样式风格
+例如<a>标记
+<style>
+a{     
+        font-size:9px;
+        color:red;
+}
+</style>
+
+类别选择器:由用户自己定义,以"."号开头,定义的HTML标记使用只需用class属性即可.
+为了弥补标记选择器的一些缺陷,例如,html页面中含有3个<a>标记,要使这三个标记显示不同的样式风格,只用标记选择器就不能实现.
+例如:
+<head>
+<style>
+.one{
+           font-family:宋体;
+          font-size:24px;
+          color:red;
+}
+.two{  
+          font-family:宋体;
+          font-size:18px;
+          color:red;
+}
+</style>
+</head>
+<body>
+<h2 class="one">应用one选择器</h2>
+<h2 class="two">应用two选择器</h2>
+</body>
+
+id选择器:id选择器与类别选择器基本相同,但是应用id选择器用标记属性id,而且注意:id选择器在HTML页面中只能出现一次.
+
+在页面中包含css样式:
+1.行内样式:
+<p style="color:red; font-size:12px;">
+
+2.内嵌式:
+就是在<head>部分中使用<style>这里写的css样式就是内嵌式<style>
+
+3.链接式:
+这是一种最常用的引用样式的方式,语法如下:
+<link rel='stylesheet' href='path' type='text/css'>
+rel:定义外部文档和调用文档之间关系
+href:css文档的相对或绝对路径
+type:指外部文件的类型
+例如:创建名为css.css的样式表文件.
+h1,h2,h3{
+color:red;
+font-family:宋体;
+}
+
+<head>
+<title>使用链接式引入css样式表</title>
+<link href="css.css"/>
+</head>
+<body>
+<h1>我是h1</h1>
+<h2>我是h2</h2>
+<h3>我是h3</h3>
+</body>
+
+div标记:
+<!--div就是一个块级元素，能自动换行，独占一行-->
+<div>div1</div>
+<div>div2</div>
+<!--span就是一个行内元素，不能自动换行-->
+<span>span1</span><span>span2</span>
+
+
+
