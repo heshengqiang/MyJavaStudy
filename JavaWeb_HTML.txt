@@ -1,0 +1,180 @@
+HTML:
+(Hypertext Markup Language)超文本标记语言,用于描述超文本中内容的显示方式.
+
+文件格式:
+以  .htm 或.html 为后缀的文件形式.
+
+HTML文档结构:
+主要有4个标记组成,<html><head><title><body>不区分大小写.
+<html>
+<head>
+<title>html头部分中标题部分</title>
+</head>
+<body>html页面主体部分</body>
+</html>
+
+
+html常用标记:
+换行标记:<br>
+
+段落标记:<p>段落标记</p> 
+
+标题标记:h1-h6 <h1>标题名</h1> h1-h6的数字对应标题的重要程度,h1:一级标题,h2:二级标题等.....
+
+居中标记:<center>会居中显示的网页内容</center>
+
+文本列表标记:<--ul,ol有一个公共属性：type，设置有序列表的序号无序列表的图案其中ul-type:disc实心圆,circle空心圆 square-实心方块-->
+无序列表:<ul></ul> 
+<ul type="disc"><----默认就为实心圆--->
+    <a href="表单.html"><li>java基础</a>
+    <li>java进阶
+    <li>java高阶
+</ul>
+
+有序列表:<ol></ol> 
+<ol type="1"><---数字排序--->
+    <li>a</li>
+    <li>b</li>
+    <li>c</li>
+</ol>
+
+
+表格标记:
+表格标记主要由以下几个标记构成:
+<table></table>表格标记
+ <caption></caption>标题标记
+<th></th>表头标记
+<tr></tr>表格行标记
+<td></td>单元格标记
+
+<!--tr：表示一行，td表示这一行的单元格,即这一行对应的某一列-->
+<table border="1" width="500" height="150" align="center" bgcolor="aqua"><!--bgcolor:表示表格的背景颜色-->
+    <tr>
+        <th >表头</th><!--表头特点：内容自动居中，字体加粗-->
+        <th >表头</th>
+        <th >表头</th>
+    </tr>
+    <tr align="center"><!--align="center"表示这一行的各个单元格中内容居中-->
+     <td >姓名：</td>
+            <td ></td>
+            <td ></td>
+    </tr>
+<!--合并单元格：rowspan:跨行合并，具体的值表示跨几行   colspan：跨列合并，具体的值表示跨几列合并-->
+    <tr>
+        <td colspan="3">11</td>
+      <!--  <td>12</td>
+        <td>13</td>-->
+        <td>14</td>
+    </tr>
+    <tr>
+        <td>21</td>
+        <td>22</td>
+        <td>23</td>
+        <td rowspan="2">24</td>
+    </tr>
+    <tr>
+        <td>31</td>
+        <td>32</td>
+        <td>33</td>
+        <!--<td>34</td>-->
+    </tr>
+
+表单标记:
+<form></form>表单标记
+from表单中的属性:
+action:用于指定处理表单数据程序的URL地址
+method:指定数据传送到服务器的方式,  get请求或者post请求
+post请求:在地址后面不携带数据,使用流的方式写数据,提交用户信息等使用post方式,提交数据大小没用限制,数据安全性高.
+get请求:在地址后面携带数据,有信息安全隐患,一般从服务器获取数据,且客户端不用向服务器端提交信息时使用,提交数据大小有限制.
+onSumbit:用于指定用户单机提交按钮时触发的事件.
+name:定义表单名称
+target:指定输入数据结果显示在哪个窗口中,  属性值一般为:_blank _self _parent _top.
+
+表单输入标记:
+<input></input>
+input标记属性:
+type:指定输入类型,共10种
+checked:指定输入字段是否处于被选中状态,用于type为radio和checkbox情况下,表示必须被选中.
+width:指定输入字段的宽度,用于type为image情况下.
+height:指定输入字段的高度,用于type为image情况下.
+maxlength:指定输入字段的可输入文字个数,用于type为text和password情况下.
+readonly:指定字段是否为只读,
+size:指定输入字段的宽度,type为text和password时,以文字个数为单位,type为其他时,以像素为单位.
+src:用于指定图片来源,只当type为image时使用.
+usemap:
+alt:用于指定当图片无法显示时显示的文字,当type为image用.
+name:输入字段名称.
+value:用于指定字段的数据值,type为check和radio时value属性不可省略,指定的是数据项选定时的值,type为button reset submit时指定的时按钮显示的文字
+
+type属性值:
+text:文本框
+password:密码框
+file:文件域
+radio:单选按钮
+checkbox:复选框
+submit:提交按钮
+reset:重置按钮
+button:普通按钮
+hidden:隐藏域
+image:图像域
+email:表示文本框只能输入Email地址
+url:表示只能输入URL
+number表示只能输入数值
+range:表示必须输入一定范围内数字值的文本框
+
+
+下拉框标记:
+<select></select>
+下拉列表框属性:
+name:指定名称
+size:指定列表框显示的数量
+multiple:指定是否支持多选
+举例:
+<select name="selectOne" size=3 multiple>
+<option>语文</option>
+<option>数学</option>
+<option>英语</option>
+<option>物理</option>
+</select>
+
+
+多行文本标记:
+<textarea></textarea>
+多行文本标记属性:
+name:指定名称
+clos:指定文本框显示的列数
+rows:指定文本框显示的行数
+readonly:指定为文本框只读
+wrap:设置是否自动换行,属性值可以为:hard,soft,off.
+hard:默认值,自动换行,如果文字超过clos时自动换行,但是换行符会提交到服务器
+soft:自动换行,如果文字超过clos时自动换行,换行符不会提交到服务器
+off:不自动换行,想换行需要自己按Enter回车键强制换行
+
+超链接标记:
+<!--，-->
+<a href="指定链接的页面URL" target="_self">超链接内容</a>
+target:指定以何种方式打开,属性值有:_self _blank
+_blank:新的空白页面打开
+_self：将要打开的页面替换本页面_默认
+
+图片标记:
+<img>
+图片标记的属性:
+src:指定图片路径
+width:指定图片宽度
+height:指定图片高度
+border:指定图片外边框宽度
+alt:指定当图片无法显示时显示的文字
+
+水平线标记:
+  <hr size="3"/>这个可以设置水平线的高度,即水平线的粗细.
+
+字体标记
+<font size="3" color="blue">黑马程序员</font> size字体大小
+
+加粗标记:
+<b>加粗</b>
+
+斜体标记:
+<i>斜体</i>
+
