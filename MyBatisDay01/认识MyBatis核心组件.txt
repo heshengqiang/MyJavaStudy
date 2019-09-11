@@ -1,0 +1,161 @@
+1MyBatis好处:
+1.1不屏蔽SQL,可以更为精准的定位SQL语句,可以对其进行优化和改造.
+1.2提供强大灵活的映射机制,提供动态SQL的功能,允许我们过呢据不同条件组装SQL,能够满足需求经常变化的互联网应用.
+1.3提供使用Mapper接口编程,只要一个接口和一个XML就能创建映射器,进一步简化我们的工作,开发者更能即中精力于业务逻辑.
+
+
+2.准备MyBatis环境:
+2.1MyBatis使用需要的jar包和源码下载地址:https://github.com/mybatis/mybatis-3/releases
+2.2将MyBatis所需jar包导入项目中即可.
+
+
+3.MyBatis核心组件:
+3.1SqlSessionFactoryBuilder:(构造器)它会根据配置或则代码来生成SqlSessionFactory,采用Builder模式
+3.2Builder模式介绍:大部分情况下,都可以通过new关键字或者工厂模式创建对象,但是有些对象却比较复杂,例如一些旅游套票对象可以分为:普通成年人,退休老人,半票有座小孩,免费无座小孩,军人等,他们都有不同的规定和优惠,如果直接new对象则需要传入参数太多而且也很复杂,这个时候可以采用Builder模式即分部构建对象.
+代码类路径:
+com.mybatis.knowledgeDay01.TicketBuilder
+com.mybatis.knowledgeDay01.TicketHelper
+3.3SqlSessionFactory:(工厂接口)依靠它来生成SqlSession,使用工厂模式
+3.4SqlSession:(会话)一个既可以发送SQL执行返回结果,也可以获取Mapper的接口
+3.5SQL Mapper:(映射器)MyBatis新设计存在的组件,它由一个Java接口和xml文件或注释构成,需要给出对应的SQL和映射规则,它负责发送SQL去执行
+
+
+4.SqlSessionFactory:(工厂接口,下面有两个实现类:DefaultSqlSessionFactory和SqlSessionManager)
+4.1使用XML构建SqlSessionFactory:
+4.1.1
+XML代码:
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!--DTD约束-->
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+
+
+<!--别名设置-->
+<!-- typeAlias类型名称：这里对一些类进行别名的设置，例如pojo.role类通过别名设置为role-->
+    <typeAliases>
+        <!--type:具体的类路径  alias:该类的别名-->
+        <typeAlias type="com.mybatis.pojo.student" alias="role"/>
+    </typeAliases>
+
+
+
+
+<!--配置数据库环境-->
+<environments default="development">
+     <environment id="development">
+         <!--transactionManager表示配置事务管理器-->
+<!-- type="JDBC"：代表使用JDBC管理器方式提交和回滚来管理事务,通过从数据源得到的连接来管理事务范围 -->
+        <transactionManager type="JDBC" />
+<!-- mybatis提供了3种数据源类型，分别是：POOLED,UNPOOLED,JNDI -->
+<!-- UNPOOLED 表示不支持数据源连接池-->
+<!-- JNDI 表示支持外部数据源连接池 -->
+<!-- POOLED 表示采用内部提供的连接池方式-->
+        <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver" />
+                <property name="url" value="jdbc:mysql://localhost:3306/数据库名" />
+                <property name="username" value="root" />
+                <property name="password" value="123456" />
+        </dataSource>
+     </environment>
+</environments>
+
+
+
+
+
+<!--mappers下面的mapper属性用来配置映射器：加载xml映射文件-->
+<mappers>
+
+</mappers>
+
+</configuration>
+4.1.2构建SqlSessionFactory接口对象代码:
+public class loadSqlSessionFactory {
+    static SqlSessionFactory sqlSessionFactory=null;
+    static String resource="com/mybatis/config/mybatis-config.xml";
+
+    //构建SqlSessionFactory
+    public static SqlSessionFactory getSqlSessionFactory() {
+        try {
+            Reader reader = Resources.getResourceAsReader(resource);
+            sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sqlSessionFactory;
+    }
+
+
+}
+
+
+5.SqlSession:(类似于JDBC的Connection对象,代表连接一个资源的启用)
+5.1作用:
+获取Mapper接口
+发送SQL给数据库
+控制数据库事务
+5.2创建SqlSession:(它只是一个门面接口,它有很多方法,可以直接发送SQL)
+通过SqlSessionFactory.openSession()方式创建SqlSession
+SqlSession可以使用commit()进行事务提交,也可以使用rollback()进行事务回滚.
+
+
+
+
+6.映射器:(MyBatis中最重要最复杂的组件,由接口和对应的XML文件组成)
+描述映射规则
+提供SQL语句,并配置SQL参数类型,返回类型,刷新缓存等
+配置缓存
+提供动态SQL
+6.1用xml实现映射器:
+这里是studentMapper.xml代码如下:
+<!--namespace:对应一个接口的全限定名,于是MyBatis上下文就可以通过它找到对应的接口-->
+<mapper namespace="com.mybatis.mapper.studentMapper">
+    <!--id:对应接口的方法名,parameterType:传入sql的参数类型,resultType:返回的结果类型-->
+    <select id="findAllStudentByNumber" parameterType="java.lang.String" resultType="student">
+        select *from stum_student where stu_number=#{stu_number}
+    </select>
+    <update id="updateStudent" parameterType="student">
+        update stum_student set stu_name=#{stu_name},stu_number=#{stu_number} where stu_id=#{stu_id}
+    </update>
+    <delete id="deleteStudentByNumber" parameterType="java.lang.String">
+        delete from stum_student where stu_number=#{stu_number}
+    </delete>
+    <select id="findAllStudents" resultType="student">
+        select * from stum_student
+    </select>
+    <insert id="insertStudent" parameterType="student">
+        insert into stum_student(stu_name, stu_age, stu_number, stu_gender, stu_enrollTime, stu_class) values(#{stu_name},#{stu_age},#{stu_number},#{stu_gender},#{stu_enrollTime},#{stu_class})
+    </insert>
+</mapper>
+
+
+6.2使用Mapper接口发送SQL:代码如下
+studentMapper studentMapper = sqlSession.getMapper(studentMapper.class);
+student student = studentMapper.findAllStudentByNumber("20172753");
+
+7.生命周期:
+7.1SqlSessionFactoryBuilder:
+SqlSessionFactoryBuilder的作用就是创建一个SqlSessionFactory,创建成功后SqlSessionFactoryBuilder就失去了作用.
+
+7.2SqlSessionFactory:
+SqlSessionFactory可以被认为是一个数据库连接池,它的作用在于创建SqlSession接口对象,所以SqlSessionFactory等同于MyBatis的应用周期
+
+7.3SqlSession:
+如果说SqlSessionFactory可相当于一个数据库连接池,那么SqlSession就相当于一个连接对象(Connection),
+通过它的commit,rollBack等方法可以管理事务,该对象应该存活在一个业务请求中,当处理完后应当关闭连接.
+
+7.4Mapper:
+Mapper是一个接口,它由SqlSession创建,所以它的生命周期和SqlSession保持一致,或者说Mapper的生命周期应该小于SqlSession的生命周期
+
+
+
+
+
+
+
+
+
